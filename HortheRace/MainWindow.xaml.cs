@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Threading;
 
 namespace HortheRace
@@ -23,7 +13,9 @@ namespace HortheRace
     {
         public delegate void DoRace();
         private List<Horthe> _horses;
-        private Thread _thread;
+        //private Thread _thread;
+        private CancellationTokenSource _cancelTokenSource;
+        private CancellationToken _token;
         private bool _isRunning;
 
         public MainWindow()
@@ -31,6 +23,8 @@ namespace HortheRace
             InitializeComponent();
             _isRunning = false;
             FillHorses();
+            _cancelTokenSource = new CancellationTokenSource();
+            _token = _cancelTokenSource.Token;
         }
 
         private void FillHorses()
@@ -69,8 +63,13 @@ namespace HortheRace
                 it.Start();
             }
             _isRunning = true;
-            _thread = new(GoRace);
-            _thread.Start();
+            //_thread = new(GoRace);
+            //_thread.Start();
+            Task task = new Task(() =>
+            {
+                GoRace(_token);
+            });
+            task.Start();
         }
         
         private int CheckCount()
@@ -92,21 +91,41 @@ namespace HortheRace
             return result;
         }
 
-        private void GoRace()
+        private void GoRace(CancellationToken token)
         {
             while(!CheckHorthes())
             {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 foreach (var it in _horses)
                 {
                     it.HortheRun();
                 }
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind,
+                try
+                {
+                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind,
                   new DoRace(RefreshView));
+                }
+                catch(Exception e)
+                {
+                    //Nothing to do with it....
+                }
+                
                 Thread.Sleep(100);
             }
             _isRunning = false;
-            Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+            try
+            {
+                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                   new DoRace(ShowResults));
+            }
+            catch (Exception e)
+            {
+                //Nothing to do with it...
+            }
         }
 
         private void ShowResults()
@@ -117,7 +136,7 @@ namespace HortheRace
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _isRunning = false;
+            _cancelTokenSource.Cancel();
         }
     }
 }

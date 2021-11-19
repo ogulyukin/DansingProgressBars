@@ -27,7 +27,7 @@
                     <Grid Margin="0.2" Background="{Binding BackColor}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="200"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Title}"/>
                         <ProgressBar Name="MyPB" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding Progress}"/>
