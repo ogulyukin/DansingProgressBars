@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Threading;
 
 namespace DansingProgressBars
@@ -25,7 +15,9 @@ namespace DansingProgressBars
         public delegate void DoDanse();
         private List<MyListBoxDataItem> _items;
         private bool isRunning;
-        private Thread _thread;
+        //private Thread _thread;
+        private CancellationTokenSource _canselTokenSource;
+        private CancellationToken _tocken;
 
         public ProgressBarDialog(int progressBarCount)
         {
@@ -34,12 +26,15 @@ namespace DansingProgressBars
             FillListBox(progressBarCount);
             isRunning = false;
             //MyProgressBars.ItemsSource = items;
+            _canselTokenSource = new();
+            _tocken = _canselTokenSource.Token;
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             isRunning = false;
             Thread.Sleep(500);
+            _canselTokenSource.Cancel();
             Close();
         }
 
@@ -61,26 +56,56 @@ namespace DansingProgressBars
             }
         }
 
-        public void DoWork()
+        public void DoWork(CancellationToken token)
         {
             do
             {
+                
+
                 foreach (var it in _items)
                 {
                     it.DoWork();
                 }
-                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind,
+
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+                else
+                {
+                    try
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind,
                     new DoDanse(RefreshView));
+                    }
+                    catch (Exception e)
+                    {
+                        // do nothing with is... 
+                    }
+                    
+                }
                 Thread.Sleep(100);
             } while (isRunning);
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isRunning)
+                return;
             isRunning = true;
-            _thread = new(DoWork);
-            _thread.Start();
-            //StartButton.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new DoDanse(DoWork));
+            //_thread = new(DoWork);
+            //_thread.Start();
+            Task task = new(() =>
+            {
+                DoWork(_tocken);
+            });
+
+            task.Start();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _canselTokenSource.Cancel();
         }
     }
 }
