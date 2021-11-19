@@ -1,0 +1,28 @@
+﻿<Window x:Class="DansingProgressBars.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DansingProgressBars"
+        mc:Ignorable="d"
+        Title="Dansing Progress Bars" Height="300" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Введите количество прогресс баров" Grid.Row="1" Grid.Column="1" FontSize="24" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox x:Name="count" Text="0" Grid.Row="3" Grid.Column="1" FontSize="32" TextAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="goButton" Content="Старт" Grid.Row="5" Grid.Column="1" FontSize="32" Click="goButton_Click"/>
+    </Grid>
+</Window>
