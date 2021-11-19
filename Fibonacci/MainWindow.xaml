@@ -1,0 +1,22 @@
+﻿<Window x:Class="Fibonacci.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Fibonacci"
+        mc:Ignorable="d"
+        Title="Генерация чисел Фибоначчи" Height="420" Width="300">
+    <Grid Margin="5,5,5,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+        <TextBox x:Name="MaxNumber" Text="Введите верхнюю границу" Grid.Column="0" Grid.Row="0" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" GotFocus="MaxNumber_GotFocus" LostFocus="MaxNumber_LostFocus"/>
+        <Button x:Name="GoButton" Content="Старт" Grid.Column="0" Grid.Row="1" Margin="2" FontSize="20" FontWeight="Bold" Click="GoButton_Click"/>
+        <TextBlock x:Name="ResultBlock" Text="результаты" Grid.Column="1" Grid.Row="2" FontSize="20" TextWrapping="Wrap" TextAlignment="Center" Margin="3" Background="Beige"/>
+    </Grid>
+</Window>
