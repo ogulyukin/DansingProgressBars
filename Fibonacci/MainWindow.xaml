@@ -15,7 +15,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
-        <TextBox x:Name="MaxNumber" Text="Введите верхнюю границу" Grid.Column="0" Grid.Row="0" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" GotFocus="MaxNumber_GotFocus" LostFocus="MaxNumber_LostFocus"/>
+        <TextBox x:Name="MaxNumber" Text="Введите верхнюю границу" Foreground="Gray" Grid.Column="0" Grid.Row="0" FontSize="20" TextAlignment="Center" VerticalAlignment="Center" GotFocus="MaxNumber_GotFocus" LostFocus="MaxNumber_LostFocus"/>
         <Button x:Name="GoButton" Content="Старт" Grid.Column="0" Grid.Row="1" Margin="2" FontSize="20" FontWeight="Bold" Click="GoButton_Click"/>
         <TextBlock x:Name="ResultBlock" Text="результаты" Grid.Column="1" Grid.Row="2" FontSize="20" TextWrapping="Wrap" TextAlignment="Center" Margin="3" Background="Beige"/>
     </Grid>

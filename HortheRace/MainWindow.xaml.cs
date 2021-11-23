@@ -104,6 +104,7 @@ namespace HortheRace
                 {
                     it.HortheRun();
                 }
+
                 try
                 {
                     Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.DataBind,
@@ -116,7 +117,9 @@ namespace HortheRace
                 
                 Thread.Sleep(100);
             }
+
             _isRunning = false;
+
             try
             {
                 Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,

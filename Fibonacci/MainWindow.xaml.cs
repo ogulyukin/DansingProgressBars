@@ -49,6 +49,7 @@ namespace Fibonacci
             if (CheckMaxNumber() == 0)
             {
                 MaxNumber.Text = "";
+                MaxNumber.Foreground = Brushes.Black;
             }
         }
 
@@ -57,6 +58,7 @@ namespace Fibonacci
             if (CheckMaxNumber() == 0)
             {
                 MaxNumber.Text = "Введите верхнюю границу";
+                MaxNumber.Foreground = Brushes.Gray;
             }
         }
 
